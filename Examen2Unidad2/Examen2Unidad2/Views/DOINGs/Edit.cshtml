@@ -1,0 +1,41 @@
+﻿@model Examen2Unidad2.Models.DOING
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="text-center">
+    <form asp-action="Edit" class="align-content-center">
+        <div class="card text-center">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-header">
+                <h4>Edit a doing task</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="doingName" class="control-label"></label>
+                    <input asp-for="doingName" class="form-control" />
+                    <span asp-validation-for="doingName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="doingSTATUS" class="control-label"></label>
+                    <input asp-for="doingSTATUS" class="form-control" />
+                    <span asp-validation-for="doingSTATUS" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+
+                    <input type="submit" value="Edit" class="btn btn-outline-success btn-lg" />
+
+                </div>
+                <div class="card-footer text-muted">
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>   
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

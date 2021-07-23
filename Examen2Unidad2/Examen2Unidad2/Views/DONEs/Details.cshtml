@@ -1,0 +1,46 @@
+﻿@model Examen2Unidad2.Models.DONE
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<br />
+<br />
+
+
+<div class="card text-center mb-3">
+    <h4 class="mt-4">Details</h4>
+    <hr />
+    <h6>Showing information about you tasks</h6>
+    <div>
+        <div class="card-body text-center">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DONEName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DONEName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.doneSTATUS)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.doneSTATUS)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.doneDATE)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.doneDATE)
+                </dd>
+            </dl>
+            <a asp-action="Edit" asp-route-id="@Model.doneID" class="btn btn-outline-success">Edit</a>
+
+        </div>
+
+        <div class="card-footer text-muted">
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+    </div>
+</div>

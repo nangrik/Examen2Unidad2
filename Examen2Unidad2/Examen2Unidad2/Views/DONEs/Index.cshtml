@@ -1,0 +1,125 @@
+﻿@model Examen2Unidad2.Common.Pagination<DONE>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="text-center">
+
+    <h1>Done Tasks</h1>
+</div>
+
+
+<div class="card">
+    <div class="card-header text-center">
+        <a asp-action="Create" class="btn btn-outline-warning">Create a New finished task</a>
+
+    </div>
+    <div class="row search">
+        <div class="col-auto">
+            <input type="text" class="form-control-plaintext" id="txt-search" placeholder="Buscar" />
+        </div>
+        <div class="col-auto">
+            <a class="btn btn-outline-success" onclick="busquedapag_search" id="search-link">Buscar<i class="fas fa-search"></i></a>
+        </div>
+    </div>
+    <div class="card-body text-center">
+        <h6 class="card-text">This is a list with the tasks that you already did.</h6>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Result.SingleOrDefault().DONEName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doneSTATUS)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doneDATE)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Result)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DONEName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.doneSTATUS)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.doneDATE)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.doneID" class="btn btn-outline-success">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.doneID" class="btn btn-outline-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.doneID" class="btn btn-outline-dark">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.Result.Count() > 0)
+{
+    <span>
+        <strong>@Model.TotalRecords</strong> registros encontrados.
+    </span>
+    <span> | </span>
+    <span>
+        Pagina <strong>@Model.CurrentPage</strong> de
+        <strong>@Model.TotalPage</strong>
+    </span>
+    <span> | </span> }
+else
+{
+    <span>No hay resultados para esta busqueda</span>
+    <span> | </span>}
+
+@if (Model.CurrentPage > 1)
+{
+    @Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search },
+        new { @class = "btn btn-sm brn-default" }
+    )
+
+    <span></span>
+    @Html.ActionLink("Anterior", "Index", new { Page = Model.CurrentPage - 1, Search = Model.Search },
+    new { @class = "btn btn-sm brn-default" }
+     ) }
+else
+{
+    @Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search },
+    new { @class = "btn btn-sm brn-default disabled" }
+    )
+    <span></span>
+    @Html.ActionLink("Anterior", "Index", new { Page = 1, Search = Model.Search },
+   new { @class = "btn btn-sm brn-default disabled" }
+   )}
+
+<span></span>
+
+@if (Model.CurrentPage < Model.TotalPage)
+{
+    @Html.ActionLink("Siguiente", "Index", new { Page = Model.CurrentPage + 1, Search = Model.Search },
+        new { @class = "btn btn-sm brn-default" }
+    )
+    <span></span>
+    @Html.ActionLink(">>", "Index", new { Page = Model.TotalPage, Search = Model.Search },
+   new { @class = "btn btn-sm brn-default" }
+   ) }
+else
+{
+    @Html.ActionLink("Siguiente", "Index", new { Page = Model.CurrentPage - 1, Search = Model.Search },
+    new { @class = "btn btn-sm brn-default disabled" }
+   )
+    <span></span>
+    @Html.ActionLink(">>", "Index", new { Page = Model.TotalPage, Search = Model.Search },
+     new { @class = "btn btn-sm brn-default disabled" }
+   )}
+<script src="~/js/Busquedapag.js" asp-append-version="true"></script>

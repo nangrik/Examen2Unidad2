@@ -1,0 +1,43 @@
+﻿@model Examen2Unidad2.Models.DOING
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="text-center">
+
+
+    <form asp-action="Create" class="align-content-center">
+        <div class="card text-center">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-header">
+                <h4>Create a new doing task</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="doingName" class="control-label"></label>
+                    <input asp-for="doingName" class="form-control" />
+                    <span asp-validation-for="doingName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="doingSTATUS" class="control-label"></label>
+                    <input asp-for="doingSTATUS" class="form-control" />
+                    <span asp-validation-for="doingSTATUS" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+
+                    <input type="submit" value="Create" class="btn btn-outline-warning btn-lg" />
+
+                </div>
+                <div class="card-footer text-muted">
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>  
+        </div>
+    </form>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
