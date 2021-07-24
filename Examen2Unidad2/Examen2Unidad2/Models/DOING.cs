@@ -21,6 +21,13 @@ namespace Examen2Unidad2.Models
         [MinLength(2, ErrorMessage = "Debe tener al menos 4 caracteres")]
         [Display(Name = "Estado")]
         public string doingSTATUS { get; set; }
+        public int projectID { get; set; }
+        [ForeignKey("projectID")]
+        public Project project
+        {
+            get; set;
+
+        }
 
 
     }

@@ -34,7 +34,12 @@ namespace Examen2Unidad2.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("projectID")
+                        .HasColumnType("int");
+
                     b.HasKey("doingID");
+
+                    b.HasIndex("projectID");
 
                     b.ToTable("dOINGs");
                 });
@@ -57,9 +62,30 @@ namespace Examen2Unidad2.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<int>("projectID")
+                        .HasColumnType("int");
+
                     b.HasKey("doneID");
 
+                    b.HasIndex("projectID");
+
                     b.ToTable("dONEs");
+                });
+
+            modelBuilder.Entity("Examen2Unidad2.Models.Project", b =>
+                {
+                    b.Property<int>("projectID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("projectNAME")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("projectID");
+
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("Examen2Unidad2.Models.TODO", b =>
@@ -79,7 +105,12 @@ namespace Examen2Unidad2.Migrations
                     b.Property<DateTime>("TODOstart")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("projectID")
+                        .HasColumnType("int");
+
                     b.HasKey("TODOid");
+
+                    b.HasIndex("projectID");
 
                     b.ToTable("tODOs");
                 });
@@ -284,6 +315,39 @@ namespace Examen2Unidad2.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Examen2Unidad2.Models.DOING", b =>
+                {
+                    b.HasOne("Examen2Unidad2.Models.Project", "project")
+                        .WithMany("dOINGs")
+                        .HasForeignKey("projectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("project");
+                });
+
+            modelBuilder.Entity("Examen2Unidad2.Models.DONE", b =>
+                {
+                    b.HasOne("Examen2Unidad2.Models.Project", "project")
+                        .WithMany("dONEs")
+                        .HasForeignKey("projectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("project");
+                });
+
+            modelBuilder.Entity("Examen2Unidad2.Models.TODO", b =>
+                {
+                    b.HasOne("Examen2Unidad2.Models.Project", "project")
+                        .WithMany("tODOs")
+                        .HasForeignKey("projectID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("project");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -333,6 +397,15 @@ namespace Examen2Unidad2.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Examen2Unidad2.Models.Project", b =>
+                {
+                    b.Navigation("dOINGs");
+
+                    b.Navigation("dONEs");
+
+                    b.Navigation("tODOs");
                 });
 #pragma warning restore 612, 618
         }

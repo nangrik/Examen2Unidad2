@@ -15,6 +15,9 @@ namespace Examen2Unidad2.Common
 
         //busquedas
         public string Search { get; set; }
+
+        public List<T> project { get; set; }
+
         public IEnumerable<T> Result { get; set; }
     }
 }

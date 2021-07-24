@@ -17,5 +17,6 @@ namespace Examen2Unidad2.Data
         public DbSet<TODO>tODOs { get; set; }
         public DbSet<DOING>dOINGs { get; set; }
         public DbSet<DONE> dONEs { get; set; }
+        public DbSet<Examen2Unidad2.Models.Project> Project { get; set; }
     }
 }

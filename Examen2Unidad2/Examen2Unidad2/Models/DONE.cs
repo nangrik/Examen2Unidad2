@@ -24,6 +24,14 @@ namespace Examen2Unidad2.Models
         [DataType(DataType.Date)]
         public DateTime doneDATE { get; set; }
 
+        public int projectID { get; set; }
+        [ForeignKey("projectID")]
+        public Project project
+        {
+            get; set;
+
+        }
+
     }
 
 }

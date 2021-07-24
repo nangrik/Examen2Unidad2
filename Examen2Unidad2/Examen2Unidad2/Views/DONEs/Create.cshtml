@@ -28,7 +28,10 @@
                     <input asp-for="doneDATE" class="form-control" />
                     <span asp-validation-for="doneDATE" class="text-danger"></span>
                 </div>
-
+                <div class="form-group">
+                    <label asp-for="projectID" class="control-label"></label>
+                    <select asp-for="projectID" class="form-control" asp-items="ViewBag.projectID"></select>
+                </div>
                 <div class="form-group">
 
                     <input type="submit" value="Create" class="btn btn-outline-warning btn-lg" />

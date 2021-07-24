@@ -11,25 +11,28 @@ using Examen2Unidad2.Common;
 
 namespace Examen2Unidad2.Controllers
 {
-    public class DONEsController : Controller
+    public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         //paginacion
         private readonly int RecordsPerPage = 10;
-        private Pagination<DONE> PaginationDONE;
+        private Pagination<Project> Paginationproject;
         //fin
 
-        public DONEsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        [Route("/DONE")]
-        [Route("/DONE/{search}")]
-        [Route("/DONE/{search}/{page}")]
+        //busqueda
+        [Route("/project")]
+        [Route("/project/{search}")]
+        [Route("/project/{search}/{page}")]
+        //fin del cosdigo
 
-        // GET: DONEs
-        public async Task<IActionResult> Index(string search, int page = 1)
+        // GET: Projects
+        public async Task<IActionResult> Index(string search, int page=1)
         {
             int totalRecords = 0;
             if (search == null)
@@ -37,34 +40,32 @@ namespace Examen2Unidad2.Controllers
                 search = "";
             }
             //obtener registros totales
-            totalRecords = await _context.dONEs.CountAsync(
-                s => s.DONEName.Contains(search));
+            totalRecords = await _context.Project.CountAsync(
+                s => s.projectNAME.Contains(search));
             //obtener datos
-            var NAMES = await _context.dONEs
-                .Where(s => s.DONEName.Contains(search))
-                .Include(p => p.project)
-                .ToListAsync();
+            var NAME = await _context.Project
+                .Where(s => s.projectNAME.Contains(search)).ToListAsync();
             //paginar
-            var DONEResult = NAMES.OrderBy(o => o.DONEName)
+            var NAMEResult = NAME.OrderBy(o => o.projectNAME)
                   .Skip((page - 1) * RecordsPerPage)
                 .Take(RecordsPerPage);
             //calculo de paginas
             var totalPages = (int)Math.Ceiling((double)totalRecords / RecordsPerPage);
             //instanciar paginacion
-            PaginationDONE = new Pagination<DONE>()
+            Paginationproject = new Pagination<Project>()
             {
                 RecordPerPage = this.RecordsPerPage,
                 TotalRecords = totalRecords,
                 TotalPage = totalPages,
                 CurrentPage = page,
                 Search = search,
-                Result = DONEResult
+                Result = NAMEResult
             };
 
-            return View(PaginationDONE);
+            return View(Paginationproject);
         }
 
-        // GET: DONEs/Details/5
+        // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -72,41 +73,39 @@ namespace Examen2Unidad2.Controllers
                 return NotFound();
             }
 
-            var dONE = await _context.dONEs.Include(p => p.project)
-                .FirstOrDefaultAsync(m => m.doneID == id);
-            if (dONE == null)
+            var project = await _context.Project
+                .FirstOrDefaultAsync(m => m.projectID == id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return View(dONE);
+            return View(project);
         }
 
-        // GET: DONEs/Create
+        // GET: Projects/Create
         public IActionResult Create()
         {
-            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME");
             return View();
         }
 
-        // POST: DONEs/Create
+        // POST: Projects/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("doneID,DONEName,doneSTATUS,doneDATE,projectID")] DONE dONE)
+        public async Task<IActionResult> Create([Bind("projectID,projectNAME")] Project project)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dONE);
+                _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME", dONE.projectID);
-            return View(dONE);
+            return View(project);
         }
 
-        // GET: DONEs/Edit/5
+        // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -114,23 +113,22 @@ namespace Examen2Unidad2.Controllers
                 return NotFound();
             }
 
-            var dONE = await _context.dONEs.FindAsync(id);
-            if (dONE == null)
+            var project = await _context.Project.FindAsync(id);
+            if (project == null)
             {
                 return NotFound();
             }
-            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME", dONE.projectID);
-            return View(dONE);
+            return View(project);
         }
 
-        // POST: DONEs/Edit/5
+        // POST: Projects/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("doneID,DONEName,doneSTATUS,doneDATE,projectID")] DONE dONE)
+        public async Task<IActionResult> Edit(int id, [Bind("projectID,projectNAME")] Project project)
         {
-            if (id != dONE.doneID)
+            if (id != project.projectID)
             {
                 return NotFound();
             }
@@ -139,12 +137,12 @@ namespace Examen2Unidad2.Controllers
             {
                 try
                 {
-                    _context.Update(dONE);
+                    _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DONEExists(dONE.doneID))
+                    if (!ProjectExists(project.projectID))
                     {
                         return NotFound();
                     }
@@ -155,11 +153,10 @@ namespace Examen2Unidad2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME", dONE.projectID);
-            return View(dONE);
+            return View(project);
         }
 
-        // GET: DONEs/Delete/5
+        // GET: Projects/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -167,30 +164,30 @@ namespace Examen2Unidad2.Controllers
                 return NotFound();
             }
 
-            var dONE = await _context.dONEs
-                .FirstOrDefaultAsync(m => m.doneID == id);
-            if (dONE == null)
+            var project = await _context.Project
+                .FirstOrDefaultAsync(m => m.projectID == id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return View(dONE);
+            return View(project);
         }
 
-        // POST: DONEs/Delete/5
+        // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dONE = await _context.dONEs.FindAsync(id);
-            _context.dONEs.Remove(dONE);
+            var project = await _context.Project.FindAsync(id);
+            _context.Project.Remove(project);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DONEExists(int id)
+        private bool ProjectExists(int id)
         {
-            return _context.dONEs.Any(e => e.doneID == id);
+            return _context.Project.Any(e => e.projectID == id);
         }
     }
 }

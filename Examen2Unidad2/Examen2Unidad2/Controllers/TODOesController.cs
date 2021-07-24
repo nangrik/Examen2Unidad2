@@ -42,7 +42,9 @@ namespace Examen2Unidad2.Controllers
                 s => s.TODOName.Contains(search));
             //obtener datos
             var NAME = await _context.tODOs
-                .Where(s => s.TODOName.Contains(search)).ToListAsync();
+                .Where(s => s.TODOName.Contains(search))
+                .Include(p => p.project)
+                .ToListAsync();
             //paginar
             var NAMEResult = NAME.OrderBy(o => o.TODOName)
                   .Skip((page - 1) * RecordsPerPage)
@@ -70,7 +72,7 @@ namespace Examen2Unidad2.Controllers
                 return NotFound();
             }
 
-            var tODO = await _context.tODOs
+            var tODO = await _context.tODOs.Include(p => p.project)
                 .FirstOrDefaultAsync(m => m.TODOid == id);
             if (tODO == null)
             {
@@ -83,6 +85,7 @@ namespace Examen2Unidad2.Controllers
         // GET: TODOes/Create
         public IActionResult Create()
         {
+            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME");
             return View();
         }
 
@@ -91,7 +94,7 @@ namespace Examen2Unidad2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TODOid,TODOName,TODOstart,TODOfinish")] TODO tODO)
+        public async Task<IActionResult> Create([Bind("TODOid,TODOName,TODOstart,TODOfinish,projectID")] TODO tODO)
         {
             if (ModelState.IsValid)
             {
@@ -99,6 +102,7 @@ namespace Examen2Unidad2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME", tODO.projectID);
             return View(tODO);
         }
 
@@ -115,6 +119,7 @@ namespace Examen2Unidad2.Controllers
             {
                 return NotFound();
             }
+            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME", tODO.projectID);
             return View(tODO);
         }
 
@@ -123,7 +128,7 @@ namespace Examen2Unidad2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TODOid,TODOName,TODOstart,TODOfinish")] TODO tODO)
+        public async Task<IActionResult> Edit(int id, [Bind("TODOid,TODOName,TODOstart,TODOfinish,projectID")] TODO tODO)
         {
             if (id != tODO.TODOid)
             {
@@ -150,6 +155,7 @@ namespace Examen2Unidad2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["projectID"] = new SelectList(_context.Project, "projectID", "projectNAME", tODO.projectID);
             return View(tODO);
         }
 
@@ -162,6 +168,7 @@ namespace Examen2Unidad2.Controllers
             }
 
             var tODO = await _context.tODOs
+                .Include(p => p.project)
                 .FirstOrDefaultAsync(m => m.TODOid == id);
             if (tODO == null)
             {

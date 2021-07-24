@@ -47,47 +47,16 @@ namespace Examen2Unidad2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "dOINGs",
+                name: "Project",
                 columns: table => new
                 {
-                    doingID = table.Column<int>(type: "int", nullable: false)
+                    projectID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    doingName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    doingSTATUS = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    projectNAME = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_dOINGs", x => x.doingID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "dONEs",
-                columns: table => new
-                {
-                    doneID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DONEName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    doneSTATUS = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    doneDATE = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dONEs", x => x.doneID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "tODOs",
-                columns: table => new
-                {
-                    TODOid = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TODOName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    TODOstart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TODOfinish = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_tODOs", x => x.TODOid);
+                    table.PrimaryKey("PK_Project", x => x.projectID);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,6 +165,71 @@ namespace Examen2Unidad2.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "dOINGs",
+                columns: table => new
+                {
+                    doingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    doingName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    doingSTATUS = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    projectID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dOINGs", x => x.doingID);
+                    table.ForeignKey(
+                        name: "FK_dOINGs_Project_projectID",
+                        column: x => x.projectID,
+                        principalTable: "Project",
+                        principalColumn: "projectID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "dONEs",
+                columns: table => new
+                {
+                    doneID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DONEName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    doneSTATUS = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    doneDATE = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    projectID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dONEs", x => x.doneID);
+                    table.ForeignKey(
+                        name: "FK_dONEs_Project_projectID",
+                        column: x => x.projectID,
+                        principalTable: "Project",
+                        principalColumn: "projectID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tODOs",
+                columns: table => new
+                {
+                    TODOid = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TODOName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    TODOstart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TODOfinish = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    projectID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tODOs", x => x.TODOid);
+                    table.ForeignKey(
+                        name: "FK_tODOs_Project_projectID",
+                        column: x => x.projectID,
+                        principalTable: "Project",
+                        principalColumn: "projectID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -234,6 +268,21 @@ namespace Examen2Unidad2.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dOINGs_projectID",
+                table: "dOINGs",
+                column: "projectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dONEs_projectID",
+                table: "dONEs",
+                column: "projectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tODOs_projectID",
+                table: "tODOs",
+                column: "projectID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -267,6 +316,9 @@ namespace Examen2Unidad2.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Project");
         }
     }
 }

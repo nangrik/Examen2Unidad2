@@ -31,34 +31,35 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingID)
-                        </th>
-                        <th>
                             @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingName)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingSTATUS)
                         </th>
-                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.SingleOrDefault().project.projectNAME)
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Result)
                     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.doingName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.doingSTATUS)
-            </td>
-               
-            <td >
-                <a asp-action="Edit" asp-route-id="@item.doingID" class="btn btn-outline-success">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.doingID" class="btn btn-outline-info">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.doingID" class="btn btn-outline-dark">Delete</a>
-       
-        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.doingName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.doingSTATUS)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.project.projectNAME)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.doingID" class="btn btn-outline-success">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.doingID" class="btn btn-outline-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.doingID" class="btn btn-outline-dark">Delete</a>
+
+                    </tr>
         }
                 </tbody>
             </table>
