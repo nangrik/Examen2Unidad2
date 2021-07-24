@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Examen2Unidad2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210723130436_Actualizaciondevisuales")]
-    partial class Actualizaciondevisuales
+    [Migration("20210723234116_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

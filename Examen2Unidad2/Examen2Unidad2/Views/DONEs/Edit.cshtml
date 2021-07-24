@@ -12,6 +12,11 @@
         </div>
         <div class="card-body">
             <div class="form-group">
+                <label asp-for="doneID" class="control-label"></label>
+                <input asp-for="doneID" class="form-control" />
+                <span asp-validation-for="doneID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DONEName" class="control-label"></label>
                 <input asp-for="DONEName" class="form-control" />
                 <span asp-validation-for="DONEName" class="text-danger"></span>

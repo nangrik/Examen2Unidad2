@@ -13,6 +13,11 @@
             </div>
             <div class="card-body">
                 <div class="form-group">
+                    <label asp-for="doingID" class="control-label"></label>
+                    <input asp-for="doingID" class="form-control" />
+                    <span asp-validation-for="doingID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="doingName" class="control-label"></label>
                     <input asp-for="doingName" class="form-control" />
                     <span asp-validation-for="doingName" class="text-danger"></span>

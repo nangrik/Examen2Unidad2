@@ -14,104 +14,111 @@
     <div class="card-header text-center">
         <a asp-action="Create" class="btn btn-outline-warning">Create New in process Task</a>
     </div>
-    <div class="row search">
-        <div class="col-auto">
-            <input type="text" class="form-control-plaintext" id="txt-search" placeholder="Buscar" />
+    <div class="card-header text-center">
+
+        <div class="search text-center">
+            <input type="text" class="form-control-plaintext text-center mb-2" id="txt-search" placeholder="Buscar" />
+
+            <a class="btn btn-outline-success text-center align-content-center" onclick="busquedapag_search()" id="search-link"><i class="fas fa-search text-center align-content-center">Busqueda</i></a>
+            <a class="btn btn-outline-info text-center align-content-center" asp-area="" asp-controller="DOINGs" asp-action="Index">Todos los registros</a>
+
         </div>
-        <div class="col-auto">
-            <a class="btn btn-outline-success" onclick="busquedapag_search" id="search-link">Buscar<i class="fas fa-search"></i></a>
+
         </div>
-    </div>
-    <div class="card-body text-center">
-        <h6 class="card-text">This is a list with the tasks that you are doing.</h6>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingSTATUS)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Result)
-                {
+        <div class="card-body text-center">
+            <h6 class="card-text">This is a list with the tasks that you are doing.</h6>
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.doingName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.doingSTATUS)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.doingID" class="btn btn-outline-success">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.doingID" class="btn btn-outline-info">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.doingID" class="btn btn-outline-dark">Delete</a>
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.SingleOrDefault().doingSTATUS)
+                        </th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Result)
+                    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.doingName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.doingSTATUS)
+            </td>
+               
+            <td >
+                <a asp-action="Edit" asp-route-id="@item.doingID" class="btn btn-outline-success">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.doingID" class="btn btn-outline-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.doingID" class="btn btn-outline-dark">Delete</a>
+       
+        </tr>
+        }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-@if (Model.Result.Count() > 0)
-{
-    <span>
-        <strong>@Model.TotalRecords</strong> registros encontrados.
-    </span>
-    <span> | </span>
-    <span>
-        Pagina <strong>@Model.CurrentPage</strong> de
-        <strong>@Model.TotalPage</strong>
-    </span>
-    <span> | </span> }
-else
-{
-    <span>No hay resultados para esta busqueda</span>
-    <span> | </span>}
+    @if (Model.Result.Count() > 0)
+    {
+<span>
+    <strong>@Model.TotalRecords</strong> registros encontrados.
+</span>
+                <span> | </span>
+                                <span>
+                                    Pagina <strong>@Model.CurrentPage</strong> de
+                                    <strong>@Model.TotalPage</strong>
+                                </span>
+                                                <span> | </span> }
+                                            else
+                                            {
+                                <span>No hay resultados para esta busqueda</span>
+                                                <span> | </span>}
 
-@if (Model.CurrentPage > 1)
-{
-    @Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search },
+    @if (Model.CurrentPage > 1)
+    {
+@Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search },
         new { @class = "btn btn-sm brn-default" }
     )
 
-    <span></span>
-    @Html.ActionLink("Anterior", "Index", new { Page = Model.CurrentPage - 1, Search = Model.Search },
-    new { @class = "btn btn-sm brn-default" }
-     ) }
-else
-{
-    @Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search },
-    new { @class = "btn btn-sm brn-default disabled" }
-    )
-    <span></span>
-    @Html.ActionLink("Anterior", "Index", new { Page = 1, Search = Model.Search },
-   new { @class = "btn btn-sm brn-default disabled" }
-   )}
+                <span></span>
+                                @Html.ActionLink("Anterior", "Index", new { Page = Model.CurrentPage - 1, Search = Model.Search },
+                                    new { @class = "btn btn-sm brn-default" }
+                                     ) }
+                            else
+                            {
+                @Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search },
+                    new { @class = "btn btn-sm brn-default disabled" }
+                    )
+                                <span></span>
+                                                @Html.ActionLink("Anterior", "Index", new { Page = 1, Search = Model.Search },
+                                                   new { @class = "btn btn-sm brn-default disabled" }
+                                                   )}
 
-<span></span>
+    <span></span>
 
-@if (Model.CurrentPage < Model.TotalPage)
-{
-    @Html.ActionLink("Siguiente", "Index", new { Page = Model.CurrentPage + 1, Search = Model.Search },
+    @if (Model.CurrentPage < Model.TotalPage)
+    {
+@Html.ActionLink("Siguiente", "Index", new { Page = Model.CurrentPage + 1, Search = Model.Search },
         new { @class = "btn btn-sm brn-default" }
     )
-    <span></span>
-    @Html.ActionLink(">>", "Index", new { Page = Model.TotalPage, Search = Model.Search },
-   new { @class = "btn btn-sm brn-default" }
-   ) }
-else
-{
-    @Html.ActionLink("Siguiente", "Index", new { Page = Model.CurrentPage - 1, Search = Model.Search },
-    new { @class = "btn btn-sm brn-default disabled" }
-   )
-    <span></span>
-    @Html.ActionLink(">>", "Index", new { Page = Model.TotalPage, Search = Model.Search },
-     new { @class = "btn btn-sm brn-default disabled" }
-   )}
-<script src="~/js/Busquedapag.js" asp-append-version="true"></script>
+                <span></span>
+                                @Html.ActionLink(">>", "Index", new { Page = Model.TotalPage, Search = Model.Search },
+                                   new { @class = "btn btn-sm brn-default" }
+                                   ) }
+                            else
+                            {
+                @Html.ActionLink("Siguiente", "Index", new { Page = Model.CurrentPage - 1, Search = Model.Search },
+                    new { @class = "btn btn-sm brn-default disabled" }
+                   )
+                                <span></span>
+                                                @Html.ActionLink(">>", "Index", new { Page = Model.TotalPage, Search = Model.Search },
+                                                     new { @class = "btn btn-sm brn-default disabled" }
+                                                   )}
+    <script src="~/js/Busquedapag.js" asp-append-version="true"></script>
